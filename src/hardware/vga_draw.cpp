@@ -1621,8 +1621,12 @@ void VGA_SetupDrawing(uint32_t /*val*/)
 	case M_HERC_GFX:
 		vga.draw.blocks=width*2;
 		width*=16;
+
+		assert(width > 0);
+		assert(height > 0);
 		aspect_ratio = (static_cast<double>(width) / static_cast<double>(height)) *
 		               (3.0 / 4.0);
+
 		VGA_DrawLine = VGA_Draw_1BPP_Line;
 		break;
 	case M_TANDY2:

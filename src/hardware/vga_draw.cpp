@@ -1632,8 +1632,13 @@ void VGA_SetupDrawing(uint32_t /*val*/)
 	case M_TANDY2:
 		aspect_ratio = 1.2;
 		doubleheight=true;
-		if (machine==MCH_PCJR) doublewidth=(vga.tandy.gfx_control & 0x8)==0x00;
-		else doublewidth=(vga.tandy.mode_control & 0x10)==0;
+		if (machine == MCH_PCJR)
+			doublewidth = (vga.tandy.gfx_control & 0x8 == 0x0);
+		else
+			doublewidth = (vga.tandy.mode_control & 0x10 == 0x0);
+			// Coverity flagged this as a potential copy-and-paste error.
+			// TODO: check if this should be: vga.tandy.gfx_control & 0x8 == 0x0
+
 		vga.draw.blocks = width * (doublewidth ? 1 : 2);
 		width = vga.draw.blocks * 8;
 		VGA_DrawLine = VGA_Draw_1BPP_Line;
@@ -1641,9 +1646,12 @@ void VGA_SetupDrawing(uint32_t /*val*/)
 	case M_TANDY4:
 		aspect_ratio = 1.2;
 		doubleheight=true;
-		if (machine==MCH_TANDY) doublewidth=(vga.tandy.mode_control & 0x10)==0;
-		else doublewidth=(vga.tandy.mode_control & 0x01)==0x00;
-		vga.draw.blocks=width * 2;
+		if (machine == MCH_TANDY)
+			doublewidth = (vga.tandy.mode_control & 0x10 == 0x0);
+		else
+			doublewidth = (vga.tandy.mode_control & 0x01 == 0x0);
+
+		vga.draw.blocks = width * 2;
 		width=vga.draw.blocks*4;
 		if ((machine==MCH_TANDY && (vga.tandy.gfx_control & 0x8)) ||
 			(machine==MCH_PCJR && (vga.tandy.mode_control==0x0b)))
